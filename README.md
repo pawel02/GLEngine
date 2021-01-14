@@ -8,4 +8,4 @@ I have used the following libraries:
 
 ## First iteration
 I wanted to first abstract the main parts such as VBO, VAO, EBO, Shader and texture I have also create a very simple renderer here is the result
-![Alt text](https://github.com/pawel02/GLEngine/tree/master/images/Capture.jpg "Capture of the example")
+![Alt text](https://github.com//pawel02/GLEngine/blob/master/images/Capture.PNG?raw=true "Capture of the example")
