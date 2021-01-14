@@ -3,6 +3,12 @@
 Renderer::Renderer(bool isWireframe) noexcept
 {
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	init();
+}
+
+void Renderer::init() const
+{
+	glEnable(GL_DEPTH_TEST);
 }
 
 void Renderer::draw(VertexBuffer& VBO, VertexArray& VAO, IndexBuffer& EBO, Shader& shader)
@@ -29,5 +35,6 @@ void Renderer::draw(Buffers& buffers, Shader& shader)
 void Renderer::clear()
 {
 	glClearColor(0.2, 0.5, 0.3, 1);
-	glClear(GL_COLOR_BUFFER_BIT);
+	//clear the pixel color and the depth buffer
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

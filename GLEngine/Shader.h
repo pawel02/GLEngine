@@ -1,6 +1,7 @@
 #pragma once
 #include <unordered_map>
 #include <string>
+#include <glm/glm.hpp>
 /*
 Two use cases normal is supplying the files for the vertex and fragment shader to the constructor
 
@@ -34,6 +35,7 @@ public:
 
 	//setting uniforms
 	void set_uniform_4f(const std::string& name, float x, float y, float z, float w);
+	void set_uniform_mat4(const std::string& name, glm::mat4 mat);
 	void set_uniform_1i(const std::string& name, int x);
 
 

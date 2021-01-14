@@ -13,10 +13,12 @@ struct Buffers
 class Renderer
 {
 public:
-	Renderer() = default;
+	Renderer() noexcept { init(); };
 	Renderer(bool isWireframe) noexcept;
 	~Renderer() = default;
 	
+	void init() const;
+
 	void draw(VertexBuffer& VBO, VertexArray& VAO, IndexBuffer& EBO, Shader& shader);
 	void draw(Buffers& buffers, Shader& shader);
 
