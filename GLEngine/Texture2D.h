@@ -4,10 +4,10 @@
 class Texture2D : public virtual ITexture
 {
 public:
-	Texture2D(Shader* shader);
-	Texture2D();
+	explicit Texture2D(Shader* shader) noexcept;
+	explicit Texture2D() noexcept;
 
-	~Texture2D();
+	~Texture2D() noexcept;
 
 	// Inherited via ITexture
 	virtual void settings(float border[4], unsigned int mode = GL_REPEAT, unsigned int min_filter = GL_NEAREST, unsigned int max_filter = GL_LINEAR, unsigned int mipmap = GL_LINEAR_MIPMAP_LINEAR) override;

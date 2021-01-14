@@ -6,19 +6,19 @@
 #include <iostream>
 #include <algorithm>
 
-Texture2D::Texture2D(Shader* shader)
+Texture2D::Texture2D(Shader* shader) noexcept
 	: ITexture{shader}
 {
 	stbi_set_flip_vertically_on_load(true);
 }
 
-Texture2D::Texture2D()
+Texture2D::Texture2D() noexcept
 	: ITexture{}
 {
 	stbi_set_flip_vertically_on_load(true);
 }
 
-Texture2D::~Texture2D()
+Texture2D::~Texture2D() noexcept
 {
 	delete_all();
 }

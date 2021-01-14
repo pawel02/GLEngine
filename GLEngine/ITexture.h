@@ -20,11 +20,11 @@ not given the texture a shader to work with
 class ITexture
 {
 public:
-	ITexture(Shader* s)
+	explicit ITexture(Shader* s) noexcept
 		:shader{s}
 	{}
 
-	ITexture()
+	explicit ITexture() noexcept
 		:shader{nullptr}
 	{}
 
