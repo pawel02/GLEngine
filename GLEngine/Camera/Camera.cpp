@@ -3,6 +3,10 @@
 Camera::Camera(Shader* shader, float speed) noexcept
 	:shader{shader}, speed {speed}, view{1.0f}
 {
+	projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+	//projection = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -4.0f, 4.0f);
+	if(shader != nullptr)
+		shader->set_uniform_mat4("projection", projection);
 }
 
 Camera::~Camera() noexcept

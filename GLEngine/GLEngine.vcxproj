@@ -155,6 +155,7 @@
     <ClCompile Include="shaders\Shader.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="textures\Texture2D.cpp" />
+    <ClCompile Include="window\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragment.frag" />
@@ -170,6 +171,8 @@
     <ClInclude Include="vendor\stb_image.h" />
     <ClInclude Include="textures\ITexture.h" />
     <ClInclude Include="textures\Texture2D.h" />
+    <ClInclude Include="util\Primitives.h" />
+    <ClInclude Include="window\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

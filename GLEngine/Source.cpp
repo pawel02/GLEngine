@@ -1,5 +1,4 @@
-#include <glad/glad.h>
-#include <GLFW\glfw3.h>
+#include "window/Window.h"
 
 #include <iostream>
 
@@ -8,37 +7,16 @@
 
 #include "Camera/Camera.h"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-
-float firstMouse = true;
-float yaw = -90.0f;
-float pitch = 0.0f;
-float lastX = 800.0f / 2.0f;
-float lastY = 600.0f / 2.0f;
-float fov = 45.0f;
 
 Camera camera{nullptr, 2.5f};
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-	glViewport(0, 0, width, height);
-}
-
-void process_input(GLFWwindow* window);
+void process_input(GLFWwindow* window, float deltaTime);
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
-// glfw: whenever the mouse scroll wheel scrolls, this callback is called
-// ----------------------------------------------------------------------
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
 
@@ -51,38 +29,11 @@ int main()
 		return -1;
 	}
 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4.2);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4.2);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	Window window{ std::move(Vector2<unsigned int>{800, 600}), "GLEngine", false };
 
-	//create the window
-	GLFWwindow* window = glfwCreateWindow(800, 600, "GLEngine", NULL, NULL);
-	if (window == NULL)
-	{
-		std::cout << "Failed to create GLFW window\n";
-		glfwTerminate();
-		return -1;
-	}
-
-	glfwMakeContextCurrent(window);
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-	//initialize glad
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		std::cout << "Failed to initialize GLAD \n";
-		return -1;
-	}
-
-	//set initial the window dimensions
-	glViewport(0, 0, 800, 600);
-
-	//in case of resizing
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	//mouse input
-	glfwSetCursorPosCallback(window, mouse_callback);
-	glfwSetScrollCallback(window, scroll_callback);
+	glfwSetCursorPosCallback(window.get_window(), mouse_callback);
+	glfwSetScrollCallback(window.get_window(), scroll_callback);
 
 
 	//vertecies
@@ -143,7 +94,7 @@ int main()
 	};
 
 
-	VertexBuffer VBO{sizeof(vertices), vertices };
+	VertexBuffer VBO{ sizeof(vertices), vertices };
 
 	//IndexBuffer EBO{ sizeof(indices), indices };
 
@@ -161,7 +112,7 @@ int main()
 	shader.bind();
 
 	//add all the textures
-	Texture2D texture{&shader};
+	Texture2D texture{ &shader };
 	float border[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	texture.add_texture("../../GLEngine/GLEngine/res/brick.jpg", "ourTexture");
 	texture.add_texture("../../GLEngine/GLEngine/res/wood.jpg", "ourTexture2");
@@ -170,22 +121,8 @@ int main()
 
 	Renderer renderer;
 
-	//matrix maths
-	//movement of the object
-	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-
 	//camera
-	camera = Camera{ &shader, 2.5f };
-
-	//how you want the camera to see
-	glm::mat4 projection = glm::mat4(1.0f);
-	projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-
-
-	//model is set in the main loop
-	//view is set by the camera
-	shader.set_uniform_mat4("projection", projection);
+	camera = Camera{ &shader, 20.0f };
 
 	glm::vec3 cubePos[] = {
 		glm::vec3(0.0f,  0.0f,  0.0f),
@@ -200,20 +137,20 @@ int main()
 		glm::vec3(-1.3f,  1.0f, -1.5f)
 	};
 
+	glm::mat4 model{ 1.0f };
 	//main loop
-	while (!glfwWindowShouldClose(window))
+	while (!window.is_open())
 	{
 		renderer.clear();
 
-		process_input(window);
+		process_input(window.get_window(), window.get_delta_time());
 
-		float currentFrame = glfwGetTime();
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
+		window.update();
 
 		//move the camera around
 		camera.update();
 
+		//move all the models around a little
 		for (unsigned int i = 0; i < 10; i++)
 		{
 			model = glm::mat4(1.0f);
@@ -226,11 +163,7 @@ int main()
 			renderer.draw(VBO, VAO, shader);
 		}
 
-		//moves the back buffer to the front (Double buffering)
-		glfwSwapBuffers(window);
-
-		//poll for any events
-		glfwPollEvents();
+		window.after_update();
 	}
 
 	//cleanup
@@ -240,7 +173,7 @@ int main()
 }
 
 
-void process_input(GLFWwindow* window)
+void process_input(GLFWwindow* window, float deltaTime)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 	{

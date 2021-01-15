@@ -1,0 +1,5 @@
+- abstract the window creation
+- abstract input handling
+- abstract item creation
+- create a batch renderer
+- begin work on lighting

@@ -15,6 +15,8 @@ private:
 	//default up vector
 	glm::vec3 cameraUp{ 0.0f, 1.0f, 0.0f };
 
+	//I am using the perspective projection later ortho will be also added as an option
+	glm::mat4 projection{1.0f};
 
 	Shader* shader;
 
