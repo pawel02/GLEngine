@@ -1,9 +1,13 @@
 #include "Window.h"
 #include <iostream>
 
-void frame_buffer_resize(GLFWwindow* window, int width, int height)
+//making sure that this does no leak to other files
+namespace
 {
-	glViewport(0, 0, width, height);
+	void frame_buffer_resize(GLFWwindow* window, int width, int height)
+	{
+		glViewport(0, 0, width, height);
+	}
 }
 
 Window::Window(Vector2<unsigned int>&& size, const char* name, bool show_mouse) noexcept
@@ -27,7 +31,6 @@ Window::Window(Vector2<unsigned int>&& size, const char* name, bool show_mouse) 
 	//turn on vsync
 	glfwSwapInterval(1);
 
-	
 
 	if (!show_mouse)
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -73,3 +76,4 @@ void Window::after_update()
 	//poll for any events
 	glfwPollEvents();
 }
+

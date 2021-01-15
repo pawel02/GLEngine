@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClCompile Include="C:\libs\glad\src\glad.c" />
     <ClCompile Include="Camera\Camera.cpp" />
+    <ClCompile Include="Player\Player.cpp" />
     <ClCompile Include="Renderer\IndexBuffer.cpp" />
     <ClCompile Include="Renderer\Renderer.cpp" />
     <ClCompile Include="Renderer\VertexArray.cpp" />
@@ -163,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera\Camera.h" />
+    <ClInclude Include="Player\Player.h" />
     <ClInclude Include="Renderer\IndexBuffer.h" />
     <ClInclude Include="Renderer\Renderer.h" />
     <ClInclude Include="Renderer\VertexArray.h" />

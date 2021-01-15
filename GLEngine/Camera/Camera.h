@@ -54,6 +54,8 @@ public:
 	void mouse_callback(float xpos, float ypos);
 	void mouse_scroll(double xoffset, double yoffset);
 
+	void set_fov(float new_fov) { fov = new_fov; }
+
 	void set_shader(Shader* shader);
 	void update();
 };
