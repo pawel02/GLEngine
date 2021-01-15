@@ -147,27 +147,29 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="C:\libs\glad\src\glad.c" />
+    <ClCompile Include="Camera\Camera.cpp" />
     <ClCompile Include="Renderer\IndexBuffer.cpp" />
     <ClCompile Include="Renderer\Renderer.cpp" />
     <ClCompile Include="Renderer\VertexArray.cpp" />
     <ClCompile Include="Renderer\VertexBuffer.cpp" />
-    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="shaders\Shader.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="Texture2D.cpp" />
+    <ClCompile Include="textures\Texture2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragment.frag" />
     <None Include="shaders\vertex.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera\Camera.h" />
     <ClInclude Include="Renderer\IndexBuffer.h" />
     <ClInclude Include="Renderer\Renderer.h" />
     <ClInclude Include="Renderer\VertexArray.h" />
     <ClInclude Include="Renderer\VertexBuffer.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="stb_image.h" />
-    <ClInclude Include="ITexture.h" />
-    <ClInclude Include="Texture2D.h" />
+    <ClInclude Include="shaders\Shader.h" />
+    <ClInclude Include="vendor\stb_image.h" />
+    <ClInclude Include="textures\ITexture.h" />
+    <ClInclude Include="textures\Texture2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

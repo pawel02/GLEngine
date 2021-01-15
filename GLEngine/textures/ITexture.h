@@ -2,7 +2,7 @@
 #include <glad/glad.h>
 #include <unordered_map>
 #include <string>
-#include "Shader.h"
+#include "../shaders/Shader.h"
 
 struct TextureID
 {

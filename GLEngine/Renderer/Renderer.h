@@ -1,5 +1,5 @@
 #pragma once
-#include "../Shader.h"
+#include "../shaders/Shader.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 
@@ -21,6 +21,7 @@ public:
 
 	void draw(VertexBuffer& VBO, VertexArray& VAO, IndexBuffer& EBO, Shader& shader);
 	void draw(Buffers& buffers, Shader& shader);
+	void draw(VertexBuffer& VBO, VertexArray& VAO, Shader& shader);
 
 	void clear();
 };

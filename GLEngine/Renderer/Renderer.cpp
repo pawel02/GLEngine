@@ -32,6 +32,15 @@ void Renderer::draw(Buffers& buffers, Shader& shader)
 
 }
 
+void Renderer::draw(VertexBuffer& VBO, VertexArray& VAO, Shader& shader)
+{
+	VBO.bind();
+	VAO.bind();
+	shader.bind();
+
+	glDrawArrays(GL_TRIANGLES, 0, VBO.getCount());
+}
+
 void Renderer::clear()
 {
 	glClearColor(0.2, 0.5, 0.3, 1);

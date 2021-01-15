@@ -2,6 +2,7 @@
 #include "VertexBuffer.h"
 
 VertexBuffer::VertexBuffer(unsigned int count, const void* data) noexcept
+	:count{count}
 {
 	glGenBuffers(1, &id);
 	glBindBuffer(GL_ARRAY_BUFFER, id);
