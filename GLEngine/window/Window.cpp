@@ -13,9 +13,16 @@ namespace
 Window::Window(Vector2<unsigned int>&& size, const char* name, bool show_mouse) noexcept
 	:size{ std::move(size) }
 {
+	//initialize glfw
+	if (!glfwInit())
+	{
+		std::cout << "Could not initialize glfw\n";
+	}
+
+
 	//this is mainly for if you are on a MAC
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4.2);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4.2);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4.5);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4.5);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 

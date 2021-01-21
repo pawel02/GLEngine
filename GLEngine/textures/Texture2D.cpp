@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <vector>
 
 Texture2D::Texture2D(Shader* shader) noexcept
 	: ITexture{shader}
@@ -91,12 +92,14 @@ bool Texture2D::add_texture(const char* filename, const std::string& texture_nam
 		texIds[texture_name].set_id = id;
 		glActiveTexture(id);
 		glGenTextures(1, &texIds[texture_name].gen_id);
+		
 		glBindTexture(GL_TEXTURE_2D, texIds[texture_name].gen_id);
 
 		//copy the image data to the buffer for the moment only RGB images are supported
 		//in the future look at image type to determine color scheme
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
+
 
 		stbi_image_free(data);
 		return true;
@@ -126,10 +129,17 @@ void Texture2D::delete_texture(const std::string& texture_name)
 void Texture2D::bind_all() 
 {
 	is_shader_bound();
+	uint16_t i = 0;
+	std::vector<int> samplers{};
 	for (auto&& id : texIds)
 	{
-		bind(id.first);
+		glBindTexture(GL_TEXTURE_2D, id.second.gen_id);
+
+		samplers.push_back(i);
+		i++;
 	}
+
+	shader->set_uniform_1iv("u_Textures", samplers.size(), samplers.data());
 }
 
 void Texture2D::delete_all() 

@@ -8,8 +8,8 @@ class Player
 
 	GLFWwindow* g_window;
 public:
+	//this is temporary later on this will not be static once an event system is built
 	static Camera camera;
-
 
 	explicit Player(Window* window, Shader& shader) noexcept;
 	~Player() noexcept;

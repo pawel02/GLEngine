@@ -136,3 +136,8 @@ void Shader::set_uniform_1i(const std::string& name, int x)
 	glUniform1i(get_uniform_location(name), x);
 
 }
+
+void Shader::set_uniform_1iv(const std::string& name, int size, int* arr)
+{
+	glUniform1iv(get_uniform_location(name), size, arr);
+}

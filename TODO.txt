@@ -3,3 +3,5 @@
 - abstract item creation
 - create a batch renderer
 - begin work on lighting
+- make an event system so that the camera is not static on the player
+- dynamic meshes
