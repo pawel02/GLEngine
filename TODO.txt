@@ -1,3 +1,4 @@
+- move the meshes to the heap
 - abstract the window creation
 - abstract input handling
 - abstract item creation

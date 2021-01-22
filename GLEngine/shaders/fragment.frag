@@ -11,6 +11,6 @@ void main()
 {
 	//the first texture is flipped on the x axis
 	//FragColor = mix(texture(ourTexture2, vec2(1.0 - TexCoords.x, TexCoords.y) * 1.5), texture(ourTexture, TexCoords), 0.1);
-	FragColor = texture(u_Textures[int(round(texID))], TexCoords);
+	FragColor = texture(u_Textures[int(round(texID))], TexCoords) * vec4(1.0, 1.0, 1.0, 1.0);
 	//FragColor = vec4(texID);
 }

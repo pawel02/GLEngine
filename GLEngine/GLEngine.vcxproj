@@ -166,12 +166,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera\Camera.h" />
+    <ClInclude Include="Events\Event.h" />
     <ClInclude Include="Player\Player.h" />
     <ClInclude Include="Renderer\IndexBuffer.h" />
     <ClInclude Include="Renderer\Renderer.h" />
     <ClInclude Include="Renderer\VertexArray.h" />
     <ClInclude Include="Renderer\VertexBuffer.h" />
     <ClInclude Include="shaders\Shader.h" />
+    <ClInclude Include="Shapes\Cube.h" />
     <ClInclude Include="Shapes\Quad.h" />
     <ClInclude Include="vendor\stb_image.h" />
     <ClInclude Include="textures\ITexture.h" />

@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "./Renderer/Renderer.h"
-#include "./Shapes/Quad.h"
+#include "./Shapes/Cube.h"
 #include "./textures/Texture2D.h"
 
 #include "Player/Player.h"
@@ -13,17 +13,16 @@ int main()
 {
 	Window window{ std::move(Vector2<unsigned int>{800, 600}), "GLEngine", false };
 
-	//create a simple grid
-	Quad<1000> quads;
-	float TexID = 1.0f;
+	Cube<125>* cubes = new Cube<125>();
+
 	for (float x = 0; x < 5; x++)
 	{
-		for (float y = 0; y < 5; y++)
+		for (float z = 0; z < 5; z++)
 		{
-			TexID = TexID == 1.0f ? 0.0f : 1.0f;
-			quads.AddQuad(x, y, 1, TexID);
+			cubes->AddCube(x, 0, z, 1, 0);
 		}
 	}
+
 
 	//load all of the necessary shaders
 	Shader shader{ "../../GLEngine/GLEngine/shaders/vertex.vert", "../../GLEngine/GLEngine/shaders/fragment.frag" };
@@ -48,20 +47,21 @@ int main()
 	//main loop
 	while (!window.is_open())
 	{
+
 		renderer.clear();
 
 		window.update();
 
 		player.update(window.get_delta_time());
-		Player::get_camera().update();
 
-		renderer.draw(quads.get_buffers(), shader);
+		renderer.draw(cubes->get_buffers().VBO, cubes->get_buffers().VAO, shader);
 
 		window.after_update();
 	}
 
 	//cleanup
 	glfwTerminate();
+	delete cubes;
 
 	return 0;
 }

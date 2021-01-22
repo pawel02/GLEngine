@@ -1,28 +1,21 @@
 #include "Player.h"
 
-namespace
-{
-	void mouse_callback(GLFWwindow* window, double xpos, double ypos)
-	{
-		Player::get_camera().mouse_callback(xpos, ypos);
-	}
-
-	void mouse_scroll(GLFWwindow* window, double xoffset, double yoffset)
-	{
-		Player::get_camera().mouse_scroll(xoffset, yoffset);
-	}
-}
-
-Camera Player::camera { nullptr, 20.0f };
+#include "../Events/Event.h"
 
 Player::Player(Window* window, Shader& shader) noexcept
-	:window{ window }, g_window{ window->get_window() }
+	:window{ window }, g_window{ window->get_window() }, camera{ nullptr, 20.0f }
 {
 	camera.set_shader(&shader);
 
+
+	MouseMovedEvent::subscribe([&](double xpos, double ypos) {
+		get_camera().mouse_callback(xpos, ypos);
+	});
+
 	//mouse input
-	glfwSetCursorPosCallback(g_window, mouse_callback);
-	glfwSetScrollCallback(g_window, mouse_scroll);
+	MouseScolledEvent::subscribe([&](double xpos, double ypos) {
+			get_camera().mouse_scroll(xpos, ypos);
+		});
 }
 
 Player::~Player() noexcept
@@ -31,10 +24,34 @@ Player::~Player() noexcept
 
 void Player::update(float deltaTime)
 {
+	camera.update();
 	
 	if (glfwGetKey(g_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 	{
 		glfwSetWindowShouldClose(g_window, true);
+	}
+	
+	if (glfwGetKey(g_window, GLFW_KEY_Q) == GLFW_RELEASE)
+	{
+		if (isKeyDown)
+		{
+			if (!isWireframe)
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			}
+			else
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			}
+			isWireframe = !isWireframe;
+		}
+
+		isKeyDown = false;
+	}
+
+	if (glfwGetKey(g_window, GLFW_KEY_Q) == GLFW_PRESS)
+	{
+		isKeyDown = true;
 	}
 
 	//moving the camera around

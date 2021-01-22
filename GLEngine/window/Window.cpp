@@ -1,6 +1,8 @@
 #include "Window.h"
 #include <iostream>
 
+#include "../Events/Event.h"
+
 //making sure that this does no leak to other files
 namespace
 {
@@ -25,6 +27,9 @@ Window::Window(Vector2<unsigned int>&& size, const char* name, bool show_mouse) 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4.5);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	
+	//MSAA
+	glfwWindowHint(GLFW_SAMPLES, 4);
 
 	window = glfwCreateWindow(size.x, size.y, name, NULL, NULL);
 	if (window == NULL)
@@ -48,10 +53,20 @@ Window::Window(Vector2<unsigned int>&& size, const char* name, bool show_mouse) 
 		std::cout << "Failed to initialize GLAD \n";
 	}
 
+	glEnable(GL_MULTISAMPLE);
 	glViewport(0, 0, size.x, size.y);
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
 	glfwSetFramebufferSizeCallback(window, frame_buffer_resize);
+
+	//subscribe to all events
+	glfwSetCursorPosCallback(window, [](GLFWwindow* window, double xpos, double ypos)
+		{
+			MouseMovedEvent::OnEvent(xpos, ypos);
+		});
+	glfwSetScrollCallback(window, [](GLFWwindow* window, double xpos, double ypos) {
+		MouseScolledEvent::OnEvent(xpos, ypos);
+		});
 }
 
 Window::~Window() noexcept
