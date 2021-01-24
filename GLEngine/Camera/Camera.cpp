@@ -1,16 +1,23 @@
 #include "Camera.h"
 
 Camera::Camera(Shader* shader, float speed) noexcept
-	:shader{shader}, speed {speed}, view{1.0f}
+	:shaders{shader}, speed{ speed }, view{ 1.0f }
 {
 	projection = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.1f, 100.0f);
 	//projection = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -4.0f, 4.0f);
-	if(shader != nullptr)
-		shader->set_uniform_mat4("projection", projection);
+	shader->bind();
+	shader->set_uniform_mat4("projection", projection);
 }
 
 Camera::~Camera() noexcept
 {
+}
+
+void Camera::add_shader(Shader& shader)
+{
+	shaders.push_back(&shader);
+	shaders.back()->bind();
+	shaders.back()->set_uniform_mat4("projection", projection);
 }
 
 void Camera::set_speed(float new_speed)
@@ -84,19 +91,20 @@ void Camera::mouse_scroll(double xoffset, double yoffset)
 
 	//update the fov
 	projection = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.1f, 100.0f);
-	if (shader != nullptr)
-		shader->set_uniform_mat4("projection", projection);
-}
 
-void Camera::set_shader(Shader* shader)
-{
-	this->shader = shader;
-	shader->set_uniform_mat4("view", view);
-	shader->set_uniform_mat4("projection", projection);
+	for (auto&& s : shaders)
+	{
+		s->bind();
+		s->set_uniform_mat4("projection", projection);
+	}
 }
 
 void Camera::update()
 {
 	view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-	shader->set_uniform_mat4("view", view);
+	for (auto&& s : shaders)
+	{
+		s->bind();
+		s->set_uniform_mat4("view", view);
+	}
 }

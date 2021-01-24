@@ -18,8 +18,6 @@ private:
 	//I am using the perspective projection later ortho will be also added as an option
 	glm::mat4 projection{1.0f};
 
-	Shader* shader;
-
 	float speed;
 
 	glm::mat4 view;
@@ -31,16 +29,22 @@ private:
 	float lastX = 800.0f / 2.0f;
 	float lastY = 600.0f / 2.0f;
 	float fov = 45.0f;
+
+	std::vector<Shader*> shaders;
 public:
 
 	explicit Camera(Shader* shader, float speed) noexcept;
 	//just for testing get rid off this later
 	Camera(const Camera& other) noexcept
-		:shader{ other.shader }, speed{ other.speed }, view{other.view},
+		:shaders{ other.shaders }, speed{ other.speed }, view{other.view},
 		cameraFront{other.cameraFront}, cameraPos{other.cameraPos}, cameraUp{other.cameraUp}
 	{}
 
 	~Camera() noexcept;
+
+	glm::vec3 get_pos() { return cameraPos; }
+
+	void add_shader(Shader& shader);
 
 	void set_speed(float new_speed);
 
@@ -56,6 +60,5 @@ public:
 
 	void set_fov(float new_fov) { fov = new_fov; }
 
-	void set_shader(Shader* shader);
 	void update();
 };

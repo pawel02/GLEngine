@@ -3,11 +3,8 @@
 #include "../Events/Event.h"
 
 Player::Player(Window* window, Shader& shader) noexcept
-	:window{ window }, g_window{ window->get_window() }, camera{ nullptr, 20.0f }
+	:window{ window }, g_window{ window->get_window() }, camera{ &shader, 20.0f }
 {
-	camera.set_shader(&shader);
-
-
 	MouseMovedEvent::subscribe([&](double xpos, double ypos) {
 		get_camera().mouse_callback(xpos, ypos);
 	});
@@ -16,6 +13,11 @@ Player::Player(Window* window, Shader& shader) noexcept
 	MouseScolledEvent::subscribe([&](double xpos, double ypos) {
 			get_camera().mouse_scroll(xpos, ypos);
 		});
+}
+
+void Player::add_shader(Shader& shader)
+{
+	camera.add_shader(shader);
 }
 
 Player::~Player() noexcept

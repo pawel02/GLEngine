@@ -20,5 +20,7 @@ public:
 
 	void update(float deltaTime);
 
+	void add_shader(Shader& shader);
+
 	inline Camera& get_camera() { return camera; }
 };
