@@ -29,7 +29,9 @@ int main()
 
 
 	glm::vec3 LightPos(1.0f, 0.5f, 0.31f);
-	shader.set_vec3("lightColor", 1.0f, 1.0f, 1.0f);
+
+	glm::vec3 lightColor{ 1.0f };
+	shader.set_vec3("lightColor", lightColor[0], lightColor[1], lightColor[2]);
 	
 	shader.bind();
 
@@ -50,7 +52,11 @@ int main()
 	
 	glm::mat4 model{ 1.0f };
 	shader.bind();
-	shader.set_vec3("lightColor", 1.0f, 1.0f, 1.0f);
+
+	shader.set_vec3("light.ambient", 0.2f, .2f, .2f);
+	shader.set_vec3("light.diffuse", 0.5f, 0.5f, 0.5f);
+	shader.set_vec3("light.specular", 1.0f, 1.0f, 1.0f);
+
 	shader.set_uniform_mat4("model", model);
 	
 
@@ -77,6 +83,24 @@ int main()
 
 		shader.bind();
 		shader.set_vec3("lightPos", lightPos[0], lightPos[1], lightPos[2]);
+
+		//set the material for the cube
+		shader.set_vec3("material.ambient", 1.0f, 0.5f, 0.31f);
+		shader.set_vec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+		shader.set_vec3("material.specular", 0.5f, 0.5f, 0.5f);
+		shader.set_Float("material.shininess", 256.0f);
+
+		//change the light color over time
+		glm::vec3 lightColor{1.0f};
+		lightColor.x = sin(glfwGetTime() * 2.0f);
+		lightColor.y = sin(glfwGetTime() * 0.7f);
+		lightColor.z = sin(glfwGetTime() * 1.3f);
+
+		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
+		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+
+		shader.set_vec3("light.ambient", ambientColor[0], ambientColor[1], ambientColor[2]);
+		shader.set_vec3("light.diffuse", ambientColor[0], ambientColor[1], ambientColor[2]);
 
 		player.update(window.get_delta_time());
 		

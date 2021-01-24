@@ -39,6 +39,8 @@ public:
 
 	void set_uniform_mat4(const std::string& name, glm::mat4 mat);
 	void set_uniform_1i(const std::string& name, int x);
+	void set_Float(const std::string& name, float x);
+
 	void set_uniform_1iv(const std::string& name, int size, int* arr);
 
 private:

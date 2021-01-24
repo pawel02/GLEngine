@@ -5,7 +5,6 @@ layout(location = 2) in vec3 Normal;
 layout(location = 3) in float TexID;
 
 
-out vec3 Color;
 out vec2 TexCoords;
 out float texID;
 
